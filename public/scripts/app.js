@@ -257,7 +257,27 @@ function loadLocationList() {
   }
   return locations;
 }
+function getLocation() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position.coords);
+        console.log([position.coords.latitude, position.coords.longitude]);
 
+        const selectCityToAdd = document.querySelector('#selectCityToAdd');
+
+        const option = document.createElement('option');
+        const optionT = document.createTextNode('My Location')
+        option.setAttribute(`value`, `${position.coords.latitude},${position.coords.longitude}`)
+
+        selectCityToAdd.appendChild(option)
+        option.appendChild(optionT)
+        return position;
+      })
+    }
+    else {
+      console.info("geolocation is not supported in this environment");
+    }
+}
 /**
  * Initialize the app, gets the list of locations from local storage, then
  * renders the initial data.
